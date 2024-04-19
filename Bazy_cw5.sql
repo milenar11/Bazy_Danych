@@ -118,8 +118,9 @@ FROM ksiegowosc.pracownicy;
 #b
 SELECT p.id_pracownika
 FROM ksiegowosc.pracownicy p
-JOIN ksiegowosc.pensja pen ON p.id_pracownika = pen.id_pensji
-JOIN ksiegowosc.premia pr ON p.id_pracownika = pr.id_premii
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
+JOIN ksiegowosc.premia pr ON w.id_premii = pr.id_premii
 GROUP BY p.id_pracownika
 HAVING SUM(pen.kwota + pr.kwota) > 1000;
 
@@ -127,9 +128,10 @@ HAVING SUM(pen.kwota + pr.kwota) > 1000;
 #c
 SELECT p.id_pracownika
 FROM ksiegowosc.pracownicy p
-JOIN ksiegowosc.pensja pen ON p.id_pracownika = pen.id_pensji
-LEFT JOIN ksiegowosc.premia pr ON p.id_pracownika = pr.id_premii
-WHERE pen.kwota > 2000 AND pr.id_premii IS NULL;
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
+JOIN ksiegowosc.premia pr ON w.id_premii = pr.id_premii
+WHERE pen.kwota > 2000 AND pr.kwota IS NULL;
 
 #d
 SELECT *
@@ -150,23 +152,32 @@ GROUP BY p.imie, p.nazwisko;
 #g
 SELECT p.imie, p.nazwisko
 FROM ksiegowosc.pracownicy p
-JOIN ksiegowosc.pensja pen ON p.id_pracownika = pen.id_pensji
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
 WHERE pen.kwota BETWEEN 1500 AND 4000;
 
-#f
+#h
 SELECT p.imie, p.nazwisko
 FROM ksiegowosc.pracownicy p
-JOIN ksiegowosc.godziny g ON p.id_pracownika = g.id_pracownika
-LEFT JOIN ksiegowosc.premia pr ON p.id_pracownika = pr.id_premii
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+JOIN ksiegowosc.godziny g ON w.id_godziny = g.id_godziny
+JOIN ksiegowosc.premia pr ON w.id_premii = pr.id_premii
 WHERE g.liczba_godzin > 160 AND pr.id_premii IS NULL;
 
 #i
 SELECT p.imie, p.nazwisko, pen.kwota
 FROM ksiegowosc.pracownicy p
-JOIN ksiegowosc.pensja pen ON p.id_pracownika = pen.id_pensji
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
 ORDER BY pen.kwota;
 
-
+#j
+SELECT p.imie, p.nazwisko, pen.kwota, pr.kwota
+FROM ksiegowosc.pracownicy p
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
+JOIN ksiegowosc.premia pr ON w.id_premii = pr.id_premii
+ORDER BY pen.kwota DESC, pr.kwota DESC;
 
 
 
