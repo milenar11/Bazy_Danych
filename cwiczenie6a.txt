@@ -1,0 +1,36 @@
+1.)
+
+id_produktu -> nazwa_produktu, cena_produktu, ilosc, VAT
+
+id_klienta, data_zamowienia -> nazwa_klienta
+
+id_produktu, id_klienta, data_zamowienia -> ilosc, suma_brutto, suma_netto
+
+nazwa_produktu -> id_produktu
+ 
+nazwa_klienta -> id_klienta
+
+
+2.)
+
+id_produktu, id_klienta, data_zamowienia #każde zamówienie klienta na dany produkt w określonym dniu
+
+id_klienta, data_zamowienia #kazde unikalne zamówienia klientów w danym dniu
+
+nazwa_prodktu, data_zamowienia #unikalne zamówienia produktow w okreslonym dniu 
+
+
+3.)
+
+id_pomieszczenia -> numer_pomieszczenia, id_budynku, powierzchnia, liczba_okien, liczba_drzwi, ulica, miasto, kod_pocztowy
+
+id_budynktu -> ulica, miasto, kod_pocztowy
+
+ulica, miasto, kod_pocztowy -> id_budynku
+
+
+KLUCZE KANDYDUJĄCE:
+
+id_pomieszczenia
+
+id_budynku, numer_pomieszczenia
