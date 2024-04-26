@@ -179,6 +179,58 @@ JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
 JOIN ksiegowosc.premia pr ON w.id_premii = pr.id_premii
 ORDER BY pen.kwota DESC, pr.kwota DESC;
 
+#k
+SELECT pen.stanowisko, COUNT(*) AS liczba_pracownikow
+FROM ksiegowosc.pensja pen
+JOIN ksiegowosc.wynagrodzenie w ON pen.id_pensji = w.id_pensji
+GROUP BY pen.stanowisko;
+
+#l
+SELECT
+    AVG(kwota) AS srednia_placa,
+    MIN(kwota) AS minimalna_placa,
+    MAX(kwota) AS maksymalna_placa
+FROM
+    ksiegowosc.pensja
+WHERE
+    stanowisko = 'Kierownik';
+
+#m
+SELECT
+    SUM(pen.kwota + pr.kwota) AS suma_wynagrodzen
+FROM
+    ksiegowosc.wynagrodzenie w
+JOIN
+    ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
+JOIN
+    ksiegowosc.premia pr ON w.id_premii = pr.id_premii;
+
+#n
+SELECT pen.stanowisko, SUM(pen.kwota + pr.kwota) AS suma_wynagrodzen
+FROM ksiegowosc.pensja pen
+JOIN ksiegowosc.wynagrodzenie w ON w.id_pensji = pen.id_pensji
+JOIN ksiegowosc.premia pr ON w.id_premii = pr.id_premii
+GROUP BY pen.stanowisko;
+
+#g
+SELECT pen.stanowisko, COUNT(*) AS premie_ilosc
+FROM ksiegowosc.premia pr
+JOIN ksiegowosc.wynagrodzenie w ON w.id_premii = pr.id_premii
+JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
+GROUP BY pen.stanowisko;
+
+#h
+DELETE FROM ksiegowosc.pracownicy WHERE id_pracownika IN (
+    SELECT p.id_pracownika
+    FROM ksiegowosc.pracownicy p
+    JOIN ksiegowosc.wynagrodzenie w ON w.id_pracownika = p.id_pracownika
+    JOIN ksiegowosc.pensja pen ON w.id_pensji = pen.id_pensji
+    WHERE pen.kwota < 1200
+    );
+
+
+
+
 
 
 
